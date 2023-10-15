@@ -15,7 +15,7 @@ public class Convertor {
         OperatorStack.add(START_OPERATOR_CHAR);
 
         inputList.addLast(END_CHAR);
-        String currentToken = "";
+        String currentToken;
         int listIndex = 0;
         while (true) {
             currentToken = inputList.get(listIndex);
