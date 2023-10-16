@@ -14,6 +14,6 @@ public class Main {
             System.out.print(ch);
         }
         System.out.println();
-
+        System.out.println(Calculator.Solve(Convertor.addEndChar(postFix)));
     }
 }

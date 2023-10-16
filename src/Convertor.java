@@ -36,7 +36,7 @@ public class Convertor {
             }
             if (isNumber(currentToken)) {
                 Output.add(currentToken);
-            } else if (isOperator(currentToken)) {
+            } else if (isOperator(currentToken) || currentToken.equals(START_OPERATOR_CHAR)) {
                     if (currentToken.equals(")")) {
                         if (!OperatorStack.peek().equals("(")) {
                             Output.push(OperatorStack.pop());
@@ -70,6 +70,14 @@ public class Convertor {
         return Output;
     }
 
+    public static Stack<String> addEndChar(Stack<String> Input) {
+
+        Stack<String> output = new Stack<>();
+        output.push(END_CHAR);
+        output.addAll(Input.reversed());
+        return output;
+    }
+
 
     private static boolean popAndPush(String inputOperator, String stackOperator) {
         if (stackOperator.charAt(0) == '(' || inputOperator.charAt(0) == '(') {return false;}
@@ -86,14 +94,22 @@ public class Convertor {
         return isLeftOrder(inputStr1) && isLeftOrder(inputStr2);
     }
 
-    private static boolean isNumber(String inputStr) {
+    public static boolean isNumber(String inputStr) {
         final String NUMBERS = "0123456789";
+        String SecondCharOfInputStr;
+        boolean LargeNumber = false;
         String firstCharOfInputStr = inputStr.substring(0,1);
-        return NUMBERS.contains(firstCharOfInputStr);
+        try {
+            SecondCharOfInputStr = inputStr.substring(1,2);
+            LargeNumber = NUMBERS.contains(SecondCharOfInputStr) && (firstCharOfInputStr.equals("+") || firstCharOfInputStr.equals("-"));
+        } catch(StringIndexOutOfBoundsException e) {
+            SecondCharOfInputStr = "";
+        }
+        return NUMBERS.contains(firstCharOfInputStr) || LargeNumber;
     }
-    private static boolean isOperator(String inputStr) {
+    public static boolean isOperator(String inputStr) {
         final String OPERATORS = "()+-x*/%e^";
-        return OPERATORS.contains(inputStr);
+        return OPERATORS.contains(inputStr) && inputStr.length() == 1;
     }
 
     private static int getPriority(char Operator) {
